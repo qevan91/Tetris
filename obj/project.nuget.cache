@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "5DQZPk4kMNk=",
+  "dgSpecHash": "0hVu8m0/YjM=",
   "success": true,
   "projectFilePath": "C:\\Users\\quiat\\source\\repos\\Tetris\\Tetris.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\quiat\\.nuget\\packages\\raylib-cs\\3.5.0\\raylib-cs.3.5.0.nupkg.sha512"
+  ],
   "logs": []
 }

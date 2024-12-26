@@ -1,12 +1,19 @@
-﻿using System;
+﻿using Raylib_cs;
 
-namespace Tetris
+class Program
 {
-    class Program
+    static void Main()
     {
-        static void Main(string[] args)
+        Raylib.InitWindow(800, 600, "Fenêtre Raylib en .NET 5.0");
+        Raylib.SetTargetFPS(60);
+
+        while (!Raylib.WindowShouldClose())
         {
-            Console.WriteLine("Hello World!");
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.RAYWHITE);
+            Raylib.DrawText("T triste", 150, 200, 20, Color.DARKGRAY);
+            Raylib.EndDrawing();
         }
+        Raylib.CloseWindow();
     }
 }
