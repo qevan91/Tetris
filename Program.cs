@@ -18,7 +18,9 @@ public class Program
             if (menuAction == "Start")
             {
                 Console.WriteLine("Jeu démarré");
+                GameLoop gameSetup = new GameLoop();
             }
+
             else if (menuAction == "Quit")
             {
                 Raylib.CloseWindow();
@@ -26,6 +28,8 @@ public class Program
             else if (menuAction == "MusicStopped")
             {
                 Console.WriteLine("Musique coupée");
+                Console.WriteLine("Menu Coupe");
+
             }
 
             Raylib.BeginDrawing();

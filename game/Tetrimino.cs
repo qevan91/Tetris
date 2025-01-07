@@ -80,15 +80,17 @@ class Tetrimino
         }
     }
 
-    public void MoveDown(SetupGrid grid)
+    public bool MoveDown(SetupGrid grid)
     {
         if (CanMove(0, 1, grid))
         {
             Y++;
+            return false;
         }
         else
         {
             LockToGrid(grid);
+            return true;
         }
     }
 
@@ -145,8 +147,8 @@ class Tetrimino
                 if (Shape[row, col] == 1)
                 {
                     int newX = X + col + offsetX;
-                    int newY = Y + row + offsetY; 
-                    
+                    int newY = Y + row + offsetY;
+
                     if (newX < 0 || newX >= SetupGrid.Columns || newY >= SetupGrid.Rows)
                     {
                         return false;
@@ -176,3 +178,4 @@ class Tetrimino
         }
     }
 }
+

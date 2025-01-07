@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sever\\OneDrive\\Documents\\ynov\\cours\\Tetris\\Tetris.csproj": {}
+    "C:\\Users\\quiat\\source\\repos\\Tetris\\Tetris.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sever\\OneDrive\\Documents\\ynov\\cours\\Tetris\\Tetris.csproj": {
+    "C:\\Users\\quiat\\source\\repos\\Tetris\\Tetris.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sever\\OneDrive\\Documents\\ynov\\cours\\Tetris\\Tetris.csproj",
+        "projectUniqueName": "C:\\Users\\quiat\\source\\repos\\Tetris\\Tetris.csproj",
         "projectName": "Tetris",
-        "projectPath": "C:\\Users\\sever\\OneDrive\\Documents\\ynov\\cours\\Tetris\\Tetris.csproj",
-        "packagesPath": "C:\\Users\\sever\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sever\\OneDrive\\Documents\\ynov\\cours\\Tetris\\obj\\",
+        "projectPath": "C:\\Users\\quiat\\source\\repos\\Tetris\\Tetris.csproj",
+        "packagesPath": "C:\\Users\\quiat\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\quiat\\source\\repos\\Tetris\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\sever\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\quiat\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0-windows"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -32,7 +38,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net5.0-windows7.0": {
@@ -53,7 +65,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -62,7 +75,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
