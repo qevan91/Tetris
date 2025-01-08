@@ -2,7 +2,7 @@ using Raylib_cs;
 
 class SetupGrid
 {
-	public int[,] Grid { get; private set; }
+    public int[,] Grid { get; set; }
 	public const int Rows = 20;
 	public const int Columns = 10;
 	public const int CellSize = 30;

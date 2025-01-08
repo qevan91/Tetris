@@ -5,7 +5,7 @@ public class Program
 {
     static void Main(string[] args)
     {
-        Raylib.InitWindow(800, 600, "Tetris");
+        Raylib.InitWindow(1920, 1080, "Tetris");
         Raylib.SetTargetFPS(60);
 
         MainMenu menu = new MainMenu();

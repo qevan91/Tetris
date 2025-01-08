@@ -9,6 +9,14 @@ class Tetrimino
     public int Y { get; set; }
     public const int CellSize = 30;
 
+    public Tetrimino(int[,] shape, Color color, int x, int y)
+    {
+        Shape = shape;
+        Color = color;
+        X = x;
+        Y = y;
+    }
+
     public Tetrimino()
     {
         Random random = new Random();
