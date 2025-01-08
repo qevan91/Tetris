@@ -7,6 +7,7 @@ class GameLoop
     {
         SetupGrid gameSetup = new SetupGrid();
         Tetrimino currentTetrimino = new Tetrimino();
+        Tetrimino nextTetrimino = new Tetrimino();
         float timer = 0.0f;
         float dropTime = 0.5f;
         bool gameOver = false;
@@ -36,7 +37,12 @@ class GameLoop
             if (timer >= dropTime)
             {
                 bool locked = currentTetrimino.MoveDown(gameSetup);
-                gameSetup.ClearFullLines();
+                int linesCleared = gameSetup.ClearFullLines();
+
+                if (linesCleared > 0)
+                {
+                    score += linesCleared * 100;
+                }
 
                 if (locked)
                 {
@@ -46,8 +52,8 @@ class GameLoop
                     }
                     else
                     {
-                        score += 1;
-                        currentTetrimino = new Tetrimino();
+                        currentTetrimino = nextTetrimino;
+                        nextTetrimino = new Tetrimino();
                     }
                 }
 
@@ -56,9 +62,15 @@ class GameLoop
 
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.RAYWHITE);
+
             gameSetup.DrawGrid();
             currentTetrimino.DrawTetrimino();
-            Raylib.DrawText(string.Format("Integer value: {0}", score), 350, 250, 40, Color.BLACK);
+
+            Raylib.DrawText(string.Format("Score: {0}", score), 350, 250, 40, Color.BLACK);
+
+            Raylib.DrawText("Next:", 350, 320, 20, Color.BLACK);
+            DrawNextTetrimino(nextTetrimino, 350, 350);
+
             Raylib.EndDrawing();
         }
 
@@ -68,6 +80,21 @@ class GameLoop
             Raylib.ClearBackground(Color.RAYWHITE);
             Raylib.DrawText("Game Over!", 350, 250, 40, Color.RED);
             Raylib.EndDrawing();
+        }
+    }
+
+    private void DrawNextTetrimino(Tetrimino nextTetrimino, int offsetX, int offsetY)
+    {
+        for (int row = 0; row < nextTetrimino.Shape.GetLength(0); row++)
+        {
+            for (int col = 0; col < nextTetrimino.Shape.GetLength(1); col++)
+            {
+                if (nextTetrimino.Shape[row, col] == 1)
+                {
+                    Raylib.DrawRectangle(offsetX + col * Tetrimino.CellSize, offsetY + row * Tetrimino.CellSize, Tetrimino.CellSize, Tetrimino.CellSize, nextTetrimino.Color);
+                    Raylib.DrawRectangleLines(offsetX + col * Tetrimino.CellSize, offsetY + row * Tetrimino.CellSize, Tetrimino.CellSize, Tetrimino.CellSize, Color.BLACK);
+                }
+            }
         }
     }
 }

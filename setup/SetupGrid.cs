@@ -39,29 +39,35 @@ class SetupGrid
 		}
 	}
 
-	public void ClearFullLines()
-	{
-		for (int row = 0; row < Rows; row++)
-		{
-			bool isFullLine = true;
+    public int ClearFullLines()
+    {
+        int linesCleared = 0;
 
-			for (int col = 0; col < Columns; col++)
-			{
-				if (Grid[row, col] == 0)
-				{
-					isFullLine = false;
-					break;
-				}
-			}
+        for (int row = 0; row < Rows; row++)
+        {
+            bool isFullLine = true;
 
-			if (isFullLine)
-			{
-				RemoveLine(row);
-			}
-		}
-	}
+            for (int col = 0; col < Columns; col++)
+            {
+                if (Grid[row, col] == 0)
+                {
+                    isFullLine = false;
+                    break;
+                }
+            }
 
-	private void RemoveLine(int line)
+            if (isFullLine)
+            {
+                RemoveLine(row);
+                linesCleared++;
+            }
+        }
+
+        return linesCleared;
+    }
+
+
+    private void RemoveLine(int line)
 	{
 		for (int row = line; row > 0; row--)
 		{
