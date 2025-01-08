@@ -59,18 +59,31 @@ class Tetrimino
 
     public void DrawTetrimino()
     {
+        int screenWidth = 1920;
+        int screenHeight = 1080;
+
+        int gridWidth = SetupGrid.Columns * CellSize;
+        int gridHeight = SetupGrid.Rows * CellSize;
+
+        int offsetX = (screenWidth - gridWidth) / 2;
+        int offsetY = (screenHeight - gridHeight) / 2;
+
         for (int row = 0; row < Shape.GetLength(0); row++)
         {
             for (int col = 0; col < Shape.GetLength(1); col++)
             {
                 if (Shape[row, col] == 1)
                 {
-                    Raylib.DrawRectangle((X + col) * CellSize, (Y + row) * CellSize, CellSize, CellSize, Color);
-                    Raylib.DrawRectangleLines((X + col) * CellSize, (Y + row) * CellSize, CellSize, CellSize, Color.BLACK);
+                    int x = offsetX + (X + col) * CellSize;
+                    int y = offsetY + (Y + row) * CellSize;
+
+                    Raylib.DrawRectangle(x, y, CellSize, CellSize, Color);
+                    Raylib.DrawRectangleLines(x, y, CellSize, CellSize, Color.BLACK);
                 }
             }
         }
     }
+
 
     public void MoveLeft(SetupGrid grid)
     {

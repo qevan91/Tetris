@@ -9,10 +9,16 @@ public class Program
         Raylib.SetTargetFPS(60);
 
         MainMenu menu = new MainMenu();
+        RandomGameMode randomGame = new RandomGameMode();
 
         while (!Raylib.WindowShouldClose())
         {
+            Raylib.ClearBackground(Color.DARKGRAY);
+
+            randomGame.UpdateAndDrawGame();
+
             menu.Draw();
+
             string menuAction = menu.HandleInput();
 
             if (menuAction == "Start")
@@ -20,19 +26,11 @@ public class Program
                 Console.WriteLine("Jeu démarré");
                 GameLoop gameSetup = new GameLoop();
             }
-
             else if (menuAction == "Quit")
             {
                 Raylib.CloseWindow();
             }
-            else if (menuAction == "MusicStopped")
-            {
-                Console.WriteLine("Musique coupée");
-                Console.WriteLine("Menu Coupe");
 
-            }
-
-            Raylib.BeginDrawing();
             Raylib.EndDrawing();
         }
 

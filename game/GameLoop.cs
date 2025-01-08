@@ -3,16 +3,21 @@ using System;
 
 class GameLoop
 {
+    public static void StartGame()
+    {
+        new GameLoop();
+    }
+
     public GameLoop()
     {
         SetupGrid gameSetup = new SetupGrid();
         Tetrimino currentTetrimino = new Tetrimino();
         Tetrimino nextTetrimino = new Tetrimino();
+        int score = 0;
         float timer = 0.0f;
-        float dropTime = 0.5f - (score / 1000.0f);
+        float dropTime = 0.5f;
         bool gameOver = false;
         bool isPaused = false;
-        int score = 0;
 
         while (!Raylib.WindowShouldClose() && !gameOver)
         {
@@ -86,7 +91,14 @@ class GameLoop
                     if (linesCleared > 0)
                     {
                         score += linesCleared * 100;
+
+                        if (score >= 1000)
+                        {
+                            gameSetup.InitializeGrid();
+                            Console.WriteLine("Grille effacée car le score a atteint 500");
+                        }
                     }
+
 
                     if (locked)
                     {
@@ -109,13 +121,14 @@ class GameLoop
             Raylib.ClearBackground(Color.RAYWHITE);
             gameSetup.DrawGrid();
             currentTetrimino.DrawTetrimino();
-            Raylib.DrawText($"Score: {score}", 350, 250, 40, Color.BLACK);
-            Raylib.DrawText("Next:", 350, 320, 20, Color.BLACK);
-            DrawNextTetrimino(nextTetrimino, 350, 350);
+            Raylib.DrawText($"Score: {score}", 1600, 100, 40, Color.BLACK);
+            Raylib.DrawText("Next:", 1600, 200, 20, Color.BLACK);
+            DrawNextTetrimino(nextTetrimino, 1600, 230);
+
 
             if (isPaused)
             {
-                Raylib.DrawText("Paused", 350, 200, 40, Color.YELLOW);
+                Raylib.DrawText("Paused", 1600, 150, 40, Color.PURPLE);
             }
 
             Raylib.EndDrawing();
@@ -123,9 +136,35 @@ class GameLoop
 
         if (gameOver)
         {
+            ShowGameOverScreen();
+        }
+    }
+
+    private void ShowGameOverScreen()
+    {
+        bool exit = false;
+        while (!exit)
+        {
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.RAYWHITE);
             Raylib.DrawText("Game Over!", 350, 250, 40, Color.RED);
+            Raylib.DrawText("Voulez-vous rejouer ?", 350, 300, 20, Color.RED);
+            Raylib.DrawText("1. Oui", 350, 350, 20, Color.RED);
+            Raylib.DrawText("2. Non", 350, 400, 20, Color.RED);
+
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_ONE))
+            {
+                Console.WriteLine("1");
+                StartGame();
+                exit = true;
+            }
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_TWO))
+            {
+                Console.WriteLine("2");
+                Raylib.EndDrawing();
+                exit = true;
+            }
+
             Raylib.EndDrawing();
         }
     }
