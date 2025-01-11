@@ -148,7 +148,7 @@ class GameLoop
             Raylib.DrawText("Quit Button: Echap", 1600, 750, 20, Color.GREEN);
             Raylib.DrawText("Save Button: S", 1600, 800, 20, Color.GREEN);
             Raylib.DrawText("Load Button: L", 1600, 850, 20, Color.GREEN);
-            Raylib.DrawText($"Vitesse: {dropTime}", 1600, 900, 20, Color.GREEN);
+            Raylib.DrawText($"Ralentisseur: {dropTime}", 1600, 900, 20, Color.GREEN);
             Raylib.DrawText($"Hold:", 1600, 300, 20, Color.BLACK);
             DrawTetrimino(nextTetrimino, 1600, 230);
             if (haveOldTetrimino)
