@@ -51,6 +51,68 @@ class SetupGrid
         }
     }
 
+    public void DrawGrid1()
+    {
+        int screenWidth = 1920;
+        int screenHeight = 1080;
+
+        int gridWidth = Columns * CellSize;
+        int gridHeight = Rows * CellSize;
+
+        int totalGridWidth = 2 * gridWidth;
+        int availableSpace = screenWidth - totalGridWidth;
+
+        int offsetX = availableSpace / 3;
+        int offsetY = (screenHeight - gridHeight) / 2;
+
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int col = 0; col < Columns; col++)
+            {
+                int x = offsetX + col * CellSize;
+                int y = offsetY + row * CellSize;
+
+                if (Grid[row, col] != 0)
+                {
+                    Raylib.DrawRectangle(x, y, CellSize, CellSize, Color.DARKGRAY);
+                }
+                Raylib.DrawRectangleLines(x, y, CellSize, CellSize, Color.LIGHTGRAY);
+            }
+        }
+    }
+    
+    public void DrawGrid2()
+    {
+        int screenWidth = 1920;
+        int screenHeight = 1080;
+
+        int gridWidth = Columns * CellSize;
+        int gridHeight = Rows * CellSize;
+
+        int totalGridWidth = 2 * gridWidth;
+        int availableSpace = screenWidth - totalGridWidth;
+
+        int spaceBetweenGrids = 20;
+
+        int offsetX = (availableSpace / 2) + gridWidth + spaceBetweenGrids;
+        int offsetY = (screenHeight - gridHeight) / 2;
+
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int col = 0; col < Columns; col++)
+            {
+                int x = offsetX + col * CellSize;
+                int y = offsetY + row * CellSize;
+
+                if (Grid[row, col] != 0)
+                {
+                    Raylib.DrawRectangle(x, y, CellSize, CellSize, Color.DARKGRAY);
+                }
+                Raylib.DrawRectangleLines(x, y, CellSize, CellSize, Color.LIGHTGRAY);
+            }
+        }
+    }
+
 
     public int ClearFullLines()
     {

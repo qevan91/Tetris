@@ -84,7 +84,67 @@ class Tetrimino
         }
     }
 
+    public void DrawTetrimino1()
+    {
+        int screenWidth = 1920;
+        int screenHeight = 1080;
 
+        int gridWidth = SetupGrid.Columns * CellSize;
+        int gridHeight = SetupGrid.Rows * CellSize;
+
+        int totalGridWidth = 2 * gridWidth;
+        int availableSpace = screenWidth - totalGridWidth;
+
+        int offsetX = availableSpace / 3;
+        int offsetY = (screenHeight - gridHeight) / 2;
+
+        for (int row = 0; row < Shape.GetLength(0); row++)
+        {
+            for (int col = 0; col < Shape.GetLength(1); col++)
+            {
+                if (Shape[row, col] == 1)
+                {
+                    int x = offsetX + (X + col) * CellSize;
+                    int y = offsetY + (Y + row) * CellSize;
+
+                    Raylib.DrawRectangle(x, y, CellSize, CellSize, Color);
+                    Raylib.DrawRectangleLines(x, y, CellSize, CellSize, Color.BLACK);
+                }
+            }
+        }
+    }
+
+    public void DrawTetrimino2()
+    {
+        int screenWidth = 1920;
+        int screenHeight = 1080;
+
+        int gridWidth = SetupGrid.Columns * CellSize;
+        int gridHeight = SetupGrid.Rows * CellSize;
+
+        int totalGridWidth = 2 * gridWidth;
+        int availableSpace = screenWidth - totalGridWidth;
+
+        int spaceBetweenGrids = 20;
+
+        int offsetX = (availableSpace / 2) + gridWidth + spaceBetweenGrids;
+        int offsetY = (screenHeight - gridHeight) / 2;
+
+        for (int row = 0; row < Shape.GetLength(0); row++)
+        {
+            for (int col = 0; col < Shape.GetLength(1); col++)
+            {
+                if (Shape[row, col] == 1)
+                {
+                    int x = offsetX + (X + col) * CellSize;
+                    int y = offsetY + (Y + row) * CellSize;
+
+                    Raylib.DrawRectangle(x, y, CellSize, CellSize, Color);
+                    Raylib.DrawRectangleLines(x, y, CellSize, CellSize, Color.BLACK);
+                }
+            }
+        }
+    }
     public void MoveLeft(SetupGrid grid)
     {
         if (CanMove(-1, 0, grid))

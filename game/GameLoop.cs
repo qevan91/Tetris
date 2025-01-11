@@ -3,27 +3,27 @@ using System;
 
 class GameLoop
 {
-    public static void StartGame()
-    {
-        new GameLoop();
-    }
+    private Tetrimino holdTetrimino;
+    private KeyBinding keyBinding;
 
     public GameLoop()
     {
+        keyBinding = KeyBinding.LoadBindings();
         SetupGrid gameSetup = new SetupGrid();
         Tetrimino currentTetrimino = new Tetrimino();
         Tetrimino nextTetrimino = new Tetrimino();
         int score = 0;
         float timer = 0.0f;
-        float dropTime = 0.5f;
+        float dropTime = 0.5f - (score / 900.0f);
         bool gameOver = false;
         bool isPaused = false;
+        bool alreadyReached = false;
+        bool haveOldTetrimino = false;
 
         while (!Raylib.WindowShouldClose() && !gameOver)
         {
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_L))
             {
-                Console.WriteLine("Tentative de chargement");
                 var loadedData = Save.LoadGame();
                 if (loadedData != null)
                 {
@@ -41,21 +41,21 @@ class GameLoop
                         loadedData.NextTetrimino.Y
                     );
                     score = loadedData.Score;
-                    Console.WriteLine("Game Loaded");
+                    Raylib.DrawText("Game loaded", 1600, 750, 40, Color.PURPLE);
                 }
                 else
                 {
-                    Console.WriteLine("Nan ça fonctionne pas");
+                    Raylib.DrawText("Cannot save", 1600, 750, 40, Color.RED);
                 }
             }
 
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_S))
             {
                 Save.SaveGame(gameSetup, currentTetrimino, nextTetrimino, score);
-                Console.WriteLine("Game Saved");
+                Raylib.DrawText("Game saved", 1600, 700, 40, Color.PURPLE);
             }
 
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
+            if (Raylib.IsKeyPressed(keyBinding.Pause))
             {
                 isPaused = !isPaused;
             }
@@ -64,23 +64,39 @@ class GameLoop
             {
                 timer += Raylib.GetFrameTime();
 
-                dropTime = Math.Max(0.1f, 0.5f - (score / 1000.0f));
-
-                if (Raylib.IsKeyPressed(KeyboardKey.KEY_LEFT))
+                if (Raylib.IsKeyPressed(keyBinding.MoveLeft))
                 {
                     currentTetrimino.MoveLeft(gameSetup);
                 }
-                if (Raylib.IsKeyPressed(KeyboardKey.KEY_RIGHT))
+                if (Raylib.IsKeyPressed(keyBinding.MoveRight))
                 {
                     currentTetrimino.MoveRight(gameSetup);
                 }
-                if (Raylib.IsKeyDown(KeyboardKey.KEY_DOWN))
+                if (Raylib.IsKeyDown(keyBinding.MoveDown))
                 {
                     currentTetrimino.MoveDown(gameSetup);
                 }
-                if (Raylib.IsKeyPressed(KeyboardKey.KEY_UP))
+                if (Raylib.IsKeyPressed(keyBinding.Rotate))
                 {
                     currentTetrimino.Rotate(gameSetup);
+                }
+                if (Raylib.IsKeyPressed(keyBinding.Hold))
+                {
+                    if (holdTetrimino == null)
+                    {
+                        holdTetrimino = currentTetrimino;
+                        currentTetrimino = nextTetrimino;
+                        nextTetrimino = new Tetrimino();
+                    }
+                    else
+                    {
+                        Tetrimino temp = currentTetrimino;
+                        currentTetrimino = holdTetrimino;
+                        holdTetrimino = temp;
+                        currentTetrimino.X = 3;
+                        currentTetrimino.Y = 0;
+                    }
+                    haveOldTetrimino = true;
                 }
 
                 if (timer >= dropTime)
@@ -92,13 +108,12 @@ class GameLoop
                     {
                         score += linesCleared * 100;
 
-                        if (score >= 1000)
+                        if (score == 3000 && !alreadyReached)
                         {
                             gameSetup.InitializeGrid();
-                            Console.WriteLine("Grille effacée car le score a atteint 500");
+                            alreadyReached = true;
                         }
                     }
-
 
                     if (locked)
                     {
@@ -112,7 +127,6 @@ class GameLoop
                             nextTetrimino = new Tetrimino();
                         }
                     }
-
                     timer = 0.0f;
                 }
             }
@@ -123,8 +137,21 @@ class GameLoop
             currentTetrimino.DrawTetrimino();
             Raylib.DrawText($"Score: {score}", 1600, 100, 40, Color.BLACK);
             Raylib.DrawText("Next:", 1600, 200, 20, Color.BLACK);
-            DrawNextTetrimino(nextTetrimino, 1600, 230);
-
+            Raylib.DrawText($"Move Down: {keyBinding.MoveDown}", 1600, 450, 20, Color.GREEN);
+            Raylib.DrawText($"Move Left: {keyBinding.MoveLeft}", 1600, 500, 20, Color.GREEN);
+            Raylib.DrawText($"Move Right: {keyBinding.MoveRight}", 1600, 550, 20, Color.GREEN);
+            Raylib.DrawText($"Rotation: {keyBinding.Rotate}", 1600, 600, 20, Color.GREEN);
+            Raylib.DrawText($"Pause: {keyBinding.Pause}", 1600, 650, 20, Color.GREEN);
+            Raylib.DrawText($"Stock Button: {keyBinding.Hold}", 1600, 700, 20, Color.GREEN);
+            Raylib.DrawText("Quit Button: Echap", 1600, 750, 20, Color.GREEN);
+            Raylib.DrawText($"Save Button: {Raylib.IsKeyPressed(KeyboardKey.KEY_S)}", 1600, 800, 20, Color.GREEN);
+            Raylib.DrawText($"Load Button: {Raylib.IsKeyPressed(KeyboardKey.KEY_L)}", 1600, 850, 20, Color.GREEN);
+            Raylib.DrawText($"Hold:", 1600, 300, 20, Color.BLACK);
+            DrawTetrimino(nextTetrimino, 1600, 230);
+            if (haveOldTetrimino)
+            {
+                DrawTetrimino(holdTetrimino, 1600, 330);
+            }
 
             if (isPaused)
             {
@@ -155,7 +182,7 @@ class GameLoop
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_ONE))
             {
                 Console.WriteLine("1");
-                StartGame();
+                new GameLoop();
                 exit = true;
             }
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_TWO))
@@ -169,15 +196,16 @@ class GameLoop
         }
     }
 
-    private void DrawNextTetrimino(Tetrimino nextTetrimino, int offsetX, int offsetY)
+
+    private void DrawTetrimino(Tetrimino Tetrimino, int offsetX, int offsetY)
     {
-        for (int row = 0; row < nextTetrimino.Shape.GetLength(0); row++)
+        for (int row = 0; row < Tetrimino.Shape.GetLength(0); row++)
         {
-            for (int col = 0; col < nextTetrimino.Shape.GetLength(1); col++)
+            for (int col = 0; col < Tetrimino.Shape.GetLength(1); col++)
             {
-                if (nextTetrimino.Shape[row, col] == 1)
+                if (Tetrimino.Shape[row, col] == 1)
                 {
-                    Raylib.DrawRectangle(offsetX + col * Tetrimino.CellSize, offsetY + row * Tetrimino.CellSize, Tetrimino.CellSize, Tetrimino.CellSize, nextTetrimino.Color);
+                    Raylib.DrawRectangle(offsetX + col * Tetrimino.CellSize, offsetY + row * Tetrimino.CellSize, Tetrimino.CellSize, Tetrimino.CellSize, Tetrimino.Color);
                     Raylib.DrawRectangleLines(offsetX + col * Tetrimino.CellSize, offsetY + row * Tetrimino.CellSize, Tetrimino.CellSize, Tetrimino.CellSize, Color.BLACK);
                 }
             }

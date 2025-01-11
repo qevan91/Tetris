@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\quiat\\source\\repos\\Tetris\\Tetris.csproj": {}
+    "C:\\Users\\quiat\\source\\repos\\tetris\\Tetris.csproj": {}
   },
   "projects": {
-    "C:\\Users\\quiat\\source\\repos\\Tetris\\Tetris.csproj": {
+    "C:\\Users\\quiat\\source\\repos\\tetris\\Tetris.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\quiat\\source\\repos\\Tetris\\Tetris.csproj",
+        "projectUniqueName": "C:\\Users\\quiat\\source\\repos\\tetris\\Tetris.csproj",
         "projectName": "Tetris",
-        "projectPath": "C:\\Users\\quiat\\source\\repos\\Tetris\\Tetris.csproj",
+        "projectPath": "C:\\Users\\quiat\\source\\repos\\tetris\\Tetris.csproj",
         "packagesPath": "C:\\Users\\quiat\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\quiat\\source\\repos\\Tetris\\obj\\",
+        "outputPath": "C:\\Users\\quiat\\source\\repos\\tetris\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

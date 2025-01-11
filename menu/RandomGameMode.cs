@@ -9,8 +9,8 @@ class RandomGameMode
     private int score;
     private float timer;
     private float dropTime;
-    private bool gameOver;
     private Random random;
+    private bool gameOver;
 
     public RandomGameMode()
     {
@@ -20,15 +20,16 @@ class RandomGameMode
         score = 0;
         timer = 0.0f;
         dropTime = 0.5f;
-        gameOver = false;
         random = new Random();
+        gameOver = false;
     }
 
     public void UpdateAndDrawGame()
     {
+        gameOver = false;
         timer += Raylib.GetFrameTime();
 
-        if (random.NextDouble() < 0.2)
+        if (random.NextDouble() < 0.05)
         {
             if (random.Next(2) == 0)
                 currentTetrimino.MoveLeft(gameSetup);
@@ -41,7 +42,6 @@ class RandomGameMode
             currentTetrimino.Rotate(gameSetup);
         }
 
-
         if (timer >= dropTime)
         {
             bool locked = currentTetrimino.MoveDown(gameSetup);
@@ -51,9 +51,9 @@ class RandomGameMode
             {
                 score += linesCleared * 100;
 
-                if (score >= 500)
+                if (score >= 1000)
                 {
-                    dropTime = 0.3f;
+                    gameSetup.InitializeGrid();
                 }
             }
 
@@ -62,7 +62,6 @@ class RandomGameMode
                 if (currentTetrimino.Y == 0)
                 {
                     gameOver = true;
-                    gameSetup.InitializeGrid();
                 }
                 else
                 {
@@ -70,12 +69,19 @@ class RandomGameMode
                     nextTetrimino = new Tetrimino();
                 }
             }
-
             timer = 0.0f;
         }
 
+        if (gameOver)
+        {
+            gameSetup.InitializeGrid();
+            currentTetrimino = nextTetrimino;
+        }
+
+        Raylib.BeginDrawing();
+        Raylib.ClearBackground(Color.RAYWHITE);
         gameSetup.DrawGrid();
         currentTetrimino.DrawTetrimino();
-        Raylib.DrawText($"Score: {score}", 1024 + 350, 0 + 250, 40, Color.BLACK);
+        Raylib.DrawText($"Score: {score}", 1600, 100, 40, Color.BLACK);
     }
 }

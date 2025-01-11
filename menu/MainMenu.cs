@@ -4,8 +4,9 @@ using System.Numerics;
 public class MainMenu
 {
     private Rectangle startButton = new Rectangle(300, 200, 200, 50);
+    private Rectangle optionButton = new Rectangle(300, 400, 200, 50);
+    private Rectangle OvOButton = new Rectangle(300, 500, 200, 50);
     private Rectangle quitButton = new Rectangle(300, 300, 200, 50);
-    private Rectangle stopMusicButton = new Rectangle(300, 400, 200, 50);
 
     public MainMenu() { }
 
@@ -16,11 +17,14 @@ public class MainMenu
         Raylib.DrawRectangleRec(startButton, Color.LIGHTGRAY);
         Raylib.DrawText("Start Game", (int)startButton.x + 50, (int)startButton.y + 15, 20, Color.BLACK);
 
-        Raylib.DrawRectangleRec(quitButton, Color.LIGHTGRAY);
-        Raylib.DrawText("Quit Game", (int)quitButton.x + 50, (int)quitButton.y + 15, 20, Color.BLACK);
+        Raylib.DrawRectangleRec(optionButton, Color.LIGHTGRAY);
+        Raylib.DrawText("Option", (int)optionButton.x + 25, (int)optionButton.y + 15, 20, Color.BLACK);
+        
+        Raylib.DrawRectangleRec(OvOButton, Color.LIGHTGRAY);
+        Raylib.DrawText("1v1", (int)OvOButton.x + 25, (int)OvOButton.y + 15, 20, Color.BLACK);
 
-        Raylib.DrawRectangleRec(stopMusicButton, Color.LIGHTGRAY);
-        Raylib.DrawText("Stop Music", (int)stopMusicButton.x + 25, (int)stopMusicButton.y + 15, 20, Color.BLACK);
+        Raylib.DrawRectangleRec(quitButton, Color.LIGHTGRAY);
+        Raylib.DrawText("Quit", (int)quitButton.x + 50, (int)quitButton.y + 15, 20, Color.BLACK);
     }
 
     public string HandleInput()
@@ -33,13 +37,17 @@ public class MainMenu
             {
                 return "Start";
             }
+            else if (Raylib.CheckCollisionPointRec(mousePosition, OvOButton))
+            {
+                return "1v1";
+            }
+            else if (Raylib.CheckCollisionPointRec(mousePosition, optionButton))
+            {
+                return "Option";
+            }
             else if (Raylib.CheckCollisionPointRec(mousePosition, quitButton))
             {
                 return "Quit";
-            }
-            else if (Raylib.CheckCollisionPointRec(mousePosition, stopMusicButton))
-            {
-                return "MusicStopped";
             }
         }
 
