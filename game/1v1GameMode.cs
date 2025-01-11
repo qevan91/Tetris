@@ -6,6 +6,8 @@ public class OnevOne
     private Tetrimino holdTetrimino1;
     private Tetrimino holdTetrimino2;
     private KeyBinding keyBinding;
+    bool gameOver1 = false;
+    bool gameOver2 = false;
 
     public OnevOne()
     {
@@ -16,8 +18,7 @@ public class OnevOne
         Tetrimino nextTetrimino1 = new Tetrimino();
         int score1 = 0;
         float timer1 = 0.0f;
-        float dropTime1 = 0.5f - (score1 / 900.0f);
-        bool gameOver1 = false;
+        float dropTime1 = 0.5f;
         bool alreadyReached1 = false;
         bool haveOldTetrimino1 = false;
 
@@ -26,13 +27,19 @@ public class OnevOne
         Tetrimino nextTetrimino2 = new Tetrimino();
         int score2 = 0;
         float timer2 = 0.0f;
-        float dropTime2 = 0.5f - (score2 / 900.0f);
-        bool gameOver2 = false;
+        float dropTime2 = 0.5f;
         bool alreadyReached2 = false;
         bool haveOldTetrimino2 = false;
 
+        float malusTimer1 = 0.0f;
+        bool malusActive1 = false;
+        float malusTimer2 = 0.0f;
+        bool malusActive2 = false;
+
         while (!Raylib.WindowShouldClose() && !gameOver1 && !gameOver2)
         {
+            dropTime1 = 0.5f - score1 / 20000.0f;
+            dropTime2 = 0.5f - score2 / 20000.0f;
             timer1 += Raylib.GetFrameTime();
             timer2 += Raylib.GetFrameTime();
 
@@ -114,6 +121,8 @@ public class OnevOne
                 if (linesCleared1 > 0)
                 {
                     score1 += linesCleared1 * 100;
+                    malusActive2 = true;
+                    malusTimer2 = 3.0f;
 
                     if (score1 == 3000 && !alreadyReached1)
                     {
@@ -145,6 +154,8 @@ public class OnevOne
                 if (linesCleared2 > 0)
                 {
                     score2 += linesCleared2 * 100;
+                    malusActive1 = true;
+                    malusTimer1 = 3.0f;
 
                     if (score2 == 3000 && !alreadyReached2)
                     {
@@ -168,31 +179,71 @@ public class OnevOne
                 timer2 = 0.0f;
             }
 
+            if (malusActive1)
+            {
+                Raylib.DrawText("Player 1 has a malus", 500, 200, 20, Color.RED);
+                malusTimer1 -= Raylib.GetFrameTime();
+                if (malusTimer1 > 0)
+                {
+                    dropTime1 = 0.1f;
+                }
+                else
+                {
+                    malusActive1 = false;
+                    dropTime1 = 0.5f - (score1 / 900.0f);
+                }
+            }
+
+            if (malusActive2)
+            {
+                Raylib.DrawText("Player 2 has a malus", 1000, 200, 20, Color.RED);
+                malusTimer2 -= Raylib.GetFrameTime();
+                if (malusTimer2 > 0)
+                {
+                    dropTime2 = 0.1f;
+                }
+                else
+                {
+                    malusActive2 = false;
+                    dropTime2 = 0.5f - (score2 / 900.0f);
+                }
+            }
+
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.RAYWHITE);
             gameSetup1.DrawGrid1();
             currentTetrimino1.DrawTetrimino1();
             gameSetup2.DrawGrid2();
             currentTetrimino2.DrawTetrimino2();
-            Raylib.DrawText($"Score Player 1: {score1}", 1600, 100, 40, Color.BLACK);
-            Raylib.DrawText($"Score Player 2: {score2}", 1600, 150, 40, Color.BLACK);
-            Raylib.DrawText("Next Player 1:", 1600, 200, 20, Color.BLACK);
-            Raylib.DrawText("Next Player 2:", 1600, 300, 20, Color.BLACK);
-            DrawTetrimino(nextTetrimino1, 1600, 230);
-            DrawTetrimino(nextTetrimino2, 1600, 330);
+            int screenWidth = 1800;
+            int screenHeight = 1080;
+            int centerX = screenWidth / 2;
+            Raylib.DrawLine(centerX, 0, centerX, screenHeight, Color.GRAY);
+            Raylib.DrawText($"Score Player 1: {score1}", 100, 100, 40, Color.BLACK);
+            Raylib.DrawText($"Score Player 2: {score2}", 1500, 100, 40, Color.BLACK);
+            Raylib.DrawText("Next Player 1:", 100, 300, 20, Color.BLACK);
+            Raylib.DrawText("Next Player 2:", 1500, 300, 20, Color.BLACK);
+            Raylib.DrawText("Old Player 1:", 100, 450, 20, Color.BLACK);
+            Raylib.DrawText("Old Player 2:", 1500, 450, 20, Color.BLACK);
+            DrawTetrimino(nextTetrimino1, 100, 350);
+            DrawTetrimino(nextTetrimino2, 1500, 330);
             if (haveOldTetrimino1)
             {
-                DrawTetrimino(holdTetrimino1, 1600, 400);
+                DrawTetrimino(holdTetrimino1, 100, 500);
             }
             if (haveOldTetrimino2)
             {
-                DrawTetrimino(holdTetrimino2, 1600, 500);
+                DrawTetrimino(holdTetrimino2, 1500, 500);
             }
 
             Raylib.EndDrawing();
         }
 
-        if (gameOver1 || gameOver2)
+        if (gameOver1)
+        {
+            ShowGameOverScreen();
+        }
+        else if (gameOver2)
         {
             ShowGameOverScreen();
         }
@@ -205,10 +256,17 @@ public class OnevOne
         {
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.RAYWHITE);
-            Raylib.DrawText("Game Over!", 350, 250, 40, Color.RED);
-            Raylib.DrawText("Voulez-vous rejouer ?", 350, 300, 20, Color.RED);
-            Raylib.DrawText("1. Oui", 350, 350, 20, Color.RED);
-            Raylib.DrawText("2. Non", 350, 400, 20, Color.RED);
+            if (gameOver2)
+            {
+                Raylib.DrawText("PLAYER 1 WIN", 350, 250, 40, Color.GREEN);
+            }
+            else if(gameOver1)
+            {
+                Raylib.DrawText("PLAYER 2 WIN", 350, 250, 40, Color.GREEN);
+            }
+            Raylib.DrawText("Voulez-vous rejouer ?", 350, 300, 20, Color.BLACK);
+            Raylib.DrawText("1. Oui", 350, 350, 20, Color.BLACK);
+            Raylib.DrawText("2. Non", 350, 400, 20, Color.BLACK);
 
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_ONE))
             {

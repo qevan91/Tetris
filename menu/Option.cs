@@ -3,19 +3,20 @@ using System.Numerics;
 
 public class Option
 {
-    private Rectangle leftButton = new Rectangle(300, 200, 270, 50);
-    private Rectangle rightButton = new Rectangle(300, 300, 270, 50);
-    private Rectangle downButton = new Rectangle(300, 400, 270, 50);
-    private Rectangle rotateButton = new Rectangle(300, 500, 270, 50);
-    private Rectangle holdButton = new Rectangle(300, 600, 270, 50);
-    private Rectangle pauseButton = new Rectangle(300, 700, 270, 50);
-    private Rectangle backButton = new Rectangle(300, 800, 270, 50);
+    private Rectangle leftButton = new Rectangle(300, 200, 400, 50);
+    private Rectangle rightButton = new Rectangle(300, 300, 400, 50);
+    private Rectangle downButton = new Rectangle(300, 400, 400, 50);
+    private Rectangle rotateButton = new Rectangle(300, 500, 400, 50);
+    private Rectangle holdButton = new Rectangle(300, 600, 400, 50);
+    private Rectangle pauseButton = new Rectangle(300, 700, 400, 50);
 
-    private Rectangle leftButton2 = new Rectangle(600, 200, 270, 50);
-    private Rectangle rightButton2 = new Rectangle(600, 300, 270, 50);
-    private Rectangle downButton2 = new Rectangle(600, 400, 270, 50);
-    private Rectangle rotateButton2 = new Rectangle(600, 500, 270, 50);
-    private Rectangle holdButton2 = new Rectangle(600, 600, 270, 50);
+    private Rectangle leftButton2 = new Rectangle(750, 200, 400, 50);
+    private Rectangle rightButton2 = new Rectangle(750, 300, 400, 50);
+    private Rectangle downButton2 = new Rectangle(750, 400, 400, 50);
+    private Rectangle rotateButton2 = new Rectangle(750, 500, 400, 50);
+    private Rectangle holdButton2 = new Rectangle(750, 600, 400, 50);
+
+    private Rectangle backButton = new Rectangle(300, 800, 300, 50);
 
     private KeyBinding keyBinding;
 
@@ -26,7 +27,7 @@ public class Option
 
     public void Draw()
     {
-        Raylib.DrawText("Options", 320, 100, 20, Color.WHITE);
+        Raylib.DrawText("Options", 320, 100, 40, Color.WHITE);
 
         DrawButton(leftButton, $"Move Left Player 1: {keyBinding.MoveLeft}");
         DrawButton(rightButton, $"Move Right Player 1: {keyBinding.MoveRight}");
@@ -46,7 +47,10 @@ public class Option
 
     private void DrawButton(Rectangle button, string text)
     {
-        Raylib.DrawRectangleRec(button, Color.LIGHTGRAY);
+        Color buttonColor = Color.LIGHTGRAY;
+        Vector2 mousePosition = Raylib.GetMousePosition();
+
+        Raylib.DrawRectangleRec(button, buttonColor);
         Raylib.DrawText(text, (int)button.x + 20, (int)button.y + 15, 20, Color.BLACK);
     }
 
@@ -80,7 +84,6 @@ public class Option
             {
                 keyBinding.Pause = KeyPressed();
             }
-
             else if (Raylib.CheckCollisionPointRec(mousePosition, leftButton2))
             {
                 keyBinding.MoveLeft2 = KeyPressed();
@@ -101,7 +104,6 @@ public class Option
             {
                 keyBinding.Hold2 = KeyPressed();
             }
-
             else if (Raylib.CheckCollisionPointRec(mousePosition, backButton))
             {
                 return false;
@@ -132,4 +134,3 @@ public class Option
         return KeyboardKey.KEY_SPACE;
     }
 }
-
