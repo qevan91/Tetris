@@ -115,8 +115,6 @@ public class OnevOne
                 {
                     score1 += linesCleared1 * 100;
 
-                    new 
-
                     if (score1 == 3000 && !alreadyReached1)
                     {
                         gameSetup1.InitializeGrid();
