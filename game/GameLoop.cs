@@ -172,30 +172,26 @@ class GameLoop
 
     private void ShowGameOverScreen()
     {
+        GameOver gameOverScreen = new GameOver();
         bool exit = false;
-        while (!exit)
+
+        while (!exit && !Raylib.WindowShouldClose())
         {
             Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.RAYWHITE);
-            Raylib.DrawText("Game Over!", 350, 250, 40, Color.RED);
-            Raylib.DrawText("Voulez-vous rejouer ?", 350, 300, 20, Color.RED);
-            Raylib.DrawText("1. Oui", 350, 350, 20, Color.RED);
-            Raylib.DrawText("2. Non", 350, 400, 20, Color.RED);
+            string action = gameOverScreen.HandleInput();
+            gameOverScreen.Draw();
+            Raylib.EndDrawing();
 
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_ONE))
+            if (action == "Retry")
             {
-                Console.WriteLine("1");
                 new GameLoop();
                 exit = true;
             }
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_TWO))
+            else if (action == "Quit")
             {
-                Console.WriteLine("2");
-                Raylib.EndDrawing();
+                Console.WriteLine("Quitter le jeu");
                 exit = true;
             }
-
-            Raylib.EndDrawing();
         }
     }
 

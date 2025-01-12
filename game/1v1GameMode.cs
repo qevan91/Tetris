@@ -249,41 +249,40 @@ public class OnevOne
         }
     }
 
-    private void ShowGameOverScreen()
+private void ShowGameOverScreen()
+{
+    GameOver gameOverScreen = new GameOver();
+
+    bool exit = false;
+    while (!exit && !Raylib.WindowShouldClose())
     {
-        bool exit = false;
-        while (!exit)
+        if (gameOver2)
         {
-            Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.RAYWHITE);
-            if (gameOver2)
-            {
-                Raylib.DrawText("PLAYER 1 WIN", 350, 250, 40, Color.GREEN);
-            }
-            else if(gameOver1)
-            {
-                Raylib.DrawText("PLAYER 2 WIN", 350, 250, 40, Color.GREEN);
-            }
-            Raylib.DrawText("Voulez-vous rejouer ?", 350, 300, 20, Color.BLACK);
-            Raylib.DrawText("1. Oui", 350, 350, 20, Color.BLACK);
-            Raylib.DrawText("2. Non", 350, 400, 20, Color.BLACK);
+            Raylib.DrawText("PLAYER 1 WIN", 350, 250, 40, Color.GREEN);
+        }
+        else if (gameOver1)
+        {
+            Raylib.DrawText("PLAYER 2 WIN", 350, 250, 40, Color.GREEN);
+        }
+        Raylib.BeginDrawing();
+        string action = gameOverScreen.HandleInput();  
+        gameOverScreen.Draw();  
+        Raylib.EndDrawing();
 
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_ONE))
-            {
-                Console.WriteLine("1");
-                new OnevOne();
-                exit = true;
-            }
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_TWO))
-            {
-                Console.WriteLine("2");
-                Raylib.EndDrawing();
-                exit = true;
-            }
-
-            Raylib.EndDrawing();
+        if (action == "Retry")
+        {
+            new OnevOne();  
+            exit = true;
+        }
+        else if (action == "Quit")
+        {
+            Console.WriteLine("Quitter le jeu");
+            exit = true;
         }
     }
+}
+
+
 
     private void DrawTetrimino(Tetrimino Tetrimino, int offsetX, int offsetY)
     {
