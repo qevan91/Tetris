@@ -33,3 +33,4 @@ In 1v1 mode, a malus is assigned to your opponent when you complete a line (The 
 A game over menu is available when you lose a game. This asks you to either replay or quit.
 Game Mode:
 You can play a game mode where you're only allowed to use one Tetrimino and a 1v1 mode on the same computer.
+Our graphic interface is Raylib
