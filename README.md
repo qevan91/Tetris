@@ -28,7 +28,5 @@ La bibliothèque Raylib a été choisie pour les raisons suivantes :
 
 - Performances optimisées : Raylib est parfaite pour des jeux 2D comme Tetris.
 
-- Fonctionnalités graphiques puissantes : Raylib permet de dessiner facilement des formes, de gérer les entrées clavier, et de gérer l'affichage graphique sans nécessiter de configurations complexes.
-
 
 
