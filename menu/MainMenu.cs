@@ -1,30 +1,45 @@
 using Raylib_cs;
 using System.Numerics;
+using System;
 
 public class MainMenu
 {
     private Rectangle startButton = new Rectangle(300, 200, 200, 50);
-    private Rectangle optionButton = new Rectangle(300, 400, 200, 50);
-    private Rectangle OvOButton = new Rectangle(300, 500, 200, 50);
-    private Rectangle quitButton = new Rectangle(300, 300, 200, 50);
+    private Rectangle gameModeButton = new Rectangle(300, 270, 200, 50); 
+    private Rectangle OvOButton = new Rectangle(300, 340, 200, 50);
+    private Rectangle optionButton = new Rectangle(300, 410, 200, 50);
+    private Rectangle quitButton = new Rectangle(300, 480, 200, 50);
+
+    private Color normalButtonColor = Color.DARKBLUE;
+    private Color hoverButtonColor = Color.MAROON;
+    private Color borderColor = Color.WHITE;
+    private int borderThickness = 3;
 
     public MainMenu() { }
 
     public void Draw()
     {
-        Raylib.DrawText("Menu Principal", 320, 100, 20, Color.WHITE);
+        Raylib.DrawText("Menu Principal", 320, 100, 30, Color.BLACK);
 
-        Raylib.DrawRectangleRec(startButton, Color.LIGHTGRAY);
-        Raylib.DrawText("Start Game", (int)startButton.x + 50, (int)startButton.y + 15, 20, Color.BLACK);
+        DrawButton(startButton, "Start Game");
+        DrawButton(gameModeButton, "Game Mode");
+        DrawButton(OvOButton, "1v1");
+        DrawButton(optionButton, "Option");
+        DrawButton(quitButton, "Quit");
+    }
 
-        Raylib.DrawRectangleRec(optionButton, Color.LIGHTGRAY);
-        Raylib.DrawText("Option", (int)optionButton.x + 25, (int)optionButton.y + 15, 20, Color.BLACK);
-        
-        Raylib.DrawRectangleRec(OvOButton, Color.LIGHTGRAY);
-        Raylib.DrawText("1v1", (int)OvOButton.x + 25, (int)OvOButton.y + 15, 20, Color.BLACK);
+    private void DrawButton(Rectangle button, string text)
+    {
+        bool isHovered = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), button);
+        Color currentButtonColor = isHovered ? hoverButtonColor : normalButtonColor;
 
-        Raylib.DrawRectangleRec(quitButton, Color.LIGHTGRAY);
-        Raylib.DrawText("Quit", (int)quitButton.x + 50, (int)quitButton.y + 15, 20, Color.BLACK);
+        Raylib.DrawRectangleLinesEx(button, borderThickness, borderColor);
+        Raylib.DrawRectangleRec(button, currentButtonColor);
+
+        int textWidth = Raylib.MeasureText(text, 20);
+        int textX = (int)(button.x + (button.width / 2) - (textWidth / 2));
+        int textY = (int)(button.y + (button.height / 2) - 10);
+        Raylib.DrawText(text, textX, textY, 20, Color.WHITE);
     }
 
     public string HandleInput()
@@ -36,6 +51,12 @@ public class MainMenu
             if (Raylib.CheckCollisionPointRec(mousePosition, startButton))
             {
                 return "Start";
+            }
+            else if (Raylib.CheckCollisionPointRec(mousePosition, gameModeButton))
+            {
+                Console.WriteLine("GameMode démarré");
+                GameMod.StartGame();
+                return "GameMode";
             }
             else if (Raylib.CheckCollisionPointRec(mousePosition, OvOButton))
             {

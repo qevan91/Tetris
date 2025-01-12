@@ -36,6 +36,10 @@ public class Program
                 {
                     GameLoop gameSetup = new GameLoop();
                 }
+                else if (menuAction == "Game Mode")
+                {
+                    GameMod.StartGame();
+                }
                 else if (menuAction == "1v1")
                 {
                     OnevOne gameSetup = new OnevOne();
