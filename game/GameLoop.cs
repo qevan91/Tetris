@@ -5,6 +5,7 @@ class GameLoop
 {
     private Tetrimino holdTetrimino;
     private KeyBinding keyBinding;
+    private SaveScore saveScore;
 
     public GameLoop()
     {
@@ -19,6 +20,8 @@ class GameLoop
         bool isPaused = false;
         bool alreadyReached = false;
         bool haveOldTetrimino = false;
+        saveScore = new SaveScore();
+        int bestScore = saveScore.BestScore;
 
         while (!Raylib.WindowShouldClose() && !gameOver)
         {
@@ -42,18 +45,18 @@ class GameLoop
                         loadedData.NextTetrimino.Y
                     );
                     score = loadedData.Score;
-                    Raylib.DrawText("Game loaded", 1600, 750, 40, Color.PURPLE);
+                    Raylib.DrawText("Game loaded", 840, 900, 40, Color.PURPLE);
                 }
                 else
                 {
-                    Raylib.DrawText("Cannot save", 1600, 750, 40, Color.RED);
+                    Raylib.DrawText("Cannot save", 840, 900, 40, Color.RED);
                 }
             }
 
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_S))
             {
                 Save.SaveGame(gameSetup, currentTetrimino, nextTetrimino, score);
-                Raylib.DrawText("Game saved", 1600, 700, 40, Color.PURPLE);
+                Raylib.DrawText("Game saved", 840, 900, 40, Color.PURPLE);
             }
 
             if (Raylib.IsKeyPressed(keyBinding.Pause))
@@ -137,23 +140,24 @@ class GameLoop
             Raylib.ClearBackground(Color.RAYWHITE);
             gameSetup.DrawGrid();
             currentTetrimino.DrawTetrimino();
-            Raylib.DrawText($"Score: {score}", 1600, 100, 40, Color.BLACK);
-            Raylib.DrawText("Next:", 1600, 200, 20, Color.BLACK);
-            Raylib.DrawText($"Move Down: {keyBinding.MoveDown}", 1600, 450, 20, Color.GREEN);
-            Raylib.DrawText($"Move Left: {keyBinding.MoveLeft}", 1600, 500, 20, Color.GREEN);
-            Raylib.DrawText($"Move Right: {keyBinding.MoveRight}", 1600, 550, 20, Color.GREEN);
-            Raylib.DrawText($"Rotation: {keyBinding.Rotate}", 1600, 600, 20, Color.GREEN);
-            Raylib.DrawText($"Pause: {keyBinding.Pause}", 1600, 650, 20, Color.GREEN);
-            Raylib.DrawText($"Stock Button: {keyBinding.Hold}", 1600, 700, 20, Color.GREEN);
-            Raylib.DrawText("Quit Button: Echap", 1600, 750, 20, Color.GREEN);
-            Raylib.DrawText("Save Button: S", 1600, 800, 20, Color.GREEN);
-            Raylib.DrawText("Load Button: L", 1600, 850, 20, Color.GREEN);
-            Raylib.DrawText($"Ralentisseur: {dropTime}", 1600, 900, 20, Color.GREEN);
-            Raylib.DrawText($"Hold:", 1600, 300, 20, Color.BLACK);
-            DrawTetrimino(nextTetrimino, 1600, 230);
+            Raylib.DrawText($"Score: {score}", 840, 100, 40, Color.BLACK);
+            Raylib.DrawText($"Best Score: {bestScore}", 840, 150, 40, Color.BLACK);
+            Raylib.DrawText("Next:", 1250, 450, 50, Color.BLACK);
+            Raylib.DrawText($"Move Down: {keyBinding.MoveDown}", 50, 350, 20, Color.GREEN);
+            Raylib.DrawText($"Move Left: {keyBinding.MoveLeft}", 50, 400, 20, Color.GREEN);
+            Raylib.DrawText($"Move Right: {keyBinding.MoveRight}", 50, 450, 20, Color.GREEN);
+            Raylib.DrawText($"Rotation: {keyBinding.Rotate}", 50, 500, 20, Color.GREEN);
+            Raylib.DrawText($"Stock Button: {keyBinding.Hold}", 50, 550, 20, Color.GREEN);
+            Raylib.DrawText("Quit Button: Echap", 1600, 350, 20, Color.GREEN);
+            Raylib.DrawText("Save Button: S", 1600, 400, 20, Color.GREEN);
+            Raylib.DrawText("Load Button: L", 1600, 450, 20, Color.GREEN);
+            Raylib.DrawText($"Ralentisseur: {dropTime}", 1600, 500, 20, Color.GREEN);
+            Raylib.DrawText($"Pause: {keyBinding.Pause}", 1600, 550, 20, Color.GREEN);
+            Raylib.DrawText($"Hold:", 600, 450, 50, Color.BLACK);
+            DrawTetrimino(nextTetrimino, 1250, 550);
             if (haveOldTetrimino)
             {
-                DrawTetrimino(holdTetrimino, 1600, 330);
+                DrawTetrimino(holdTetrimino, 600, 550);
             }
 
             if (isPaused)
@@ -166,6 +170,7 @@ class GameLoop
 
         if (gameOver)
         {
+            saveScore.SaveBestScore(score);
             ShowGameOverScreen();
         }
     }
@@ -189,12 +194,10 @@ class GameLoop
             }
             else if (action == "Quit")
             {
-                Console.WriteLine("Quitter le jeu");
                 exit = true;
             }
         }
     }
-
 
     private void DrawTetrimino(Tetrimino Tetrimino, int offsetX, int offsetY)
     {

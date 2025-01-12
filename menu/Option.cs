@@ -18,6 +18,11 @@ public class Option
 
     private Rectangle backButton = new Rectangle(300, 800, 300, 50);
 
+    private Color normalButtonColor = Color.DARKBLUE;
+    private Color hoverButtonColor = Color.MAROON;
+    private Color borderColor = Color.WHITE;
+    private int borderThickness = 3;
+
     private KeyBinding keyBinding;
 
     public Option()
@@ -27,7 +32,9 @@ public class Option
 
     public void Draw()
     {
-        Raylib.DrawText("Options", 320, 100, 40, Color.WHITE);
+        Raylib.ClearBackground(Color.RAYWHITE);
+
+        Raylib.DrawText("Options", 320, 100, 40, Color.BLACK);
 
         DrawButton(leftButton, $"Move Left Player 1: {keyBinding.MoveLeft}");
         DrawButton(rightButton, $"Move Right Player 1: {keyBinding.MoveRight}");
@@ -47,11 +54,16 @@ public class Option
 
     private void DrawButton(Rectangle button, string text)
     {
-        Color buttonColor = Color.LIGHTGRAY;
-        Vector2 mousePosition = Raylib.GetMousePosition();
+        bool isHovered = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), button);
+        Color currentButtonColor = isHovered ? hoverButtonColor : normalButtonColor;
 
-        Raylib.DrawRectangleRec(button, buttonColor);
-        Raylib.DrawText(text, (int)button.x + 20, (int)button.y + 15, 20, Color.BLACK);
+        Raylib.DrawRectangleLinesEx(button, borderThickness, borderColor);
+        Raylib.DrawRectangleRec(button, currentButtonColor);
+
+        int textWidth = Raylib.MeasureText(text, 20);
+        int textX = (int)(button.x + (button.width / 2) - (textWidth / 2));
+        int textY = (int)(button.y + (button.height / 2) - 10);
+        Raylib.DrawText(text, textX, textY, 20, Color.WHITE);
     }
 
     public bool HandleInput()

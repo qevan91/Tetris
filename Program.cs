@@ -15,8 +15,6 @@ public class Program
 
         while (!Raylib.WindowShouldClose())
         {
-            Raylib.ClearBackground(Color.DARKGRAY);
-
             if (inOptionMenu)
             {
                 optionMenu.Draw();

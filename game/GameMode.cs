@@ -65,7 +65,7 @@ class GameMod
             {
                 timer += Raylib.GetFrameTime();
 
-                dropTime = Math.Max(0.1f, 0.5f - (score / 1000.0f));
+                dropTime = 0.5f - score / 20000.0f;
 
                 if (Raylib.IsKeyPressed(KeyboardKey.KEY_LEFT))
                 {

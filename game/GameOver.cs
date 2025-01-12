@@ -15,7 +15,7 @@ public class GameOver
     public void Draw()
     {
         Raylib.ClearBackground(Color.RAYWHITE);
-        Raylib.DrawText("GAME OVER", 300, 100, 80, Color.BLACK);
+        Raylib.DrawText("GAME OVER", 300, 100, 80, Color.RED);
 
         DrawButton(retryButton, "RETRY");
         DrawButton(quitButton, "Back to home");
